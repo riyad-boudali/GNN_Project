@@ -1,29 +1,3 @@
-# # %% Load DataFrame
-# import pandas as pd
-
-# DATA_PATH = "data/raw/HIV.csv"
-# data_DF = pd.read_csv(DATA_PATH)
-# data_DF.head()
-
-
-# # %% General Information about the data
-
-# print(data_DF.shape)
-# print(data_DF["HIV_active"].value_counts())
-
-# # %% Show Samples molecuels
-# import rdkit
-# from rdkit import Chem
-# from rdkit.Chem import Draw
-
-# sample_smiles = data_DF["smiles"][0:9].values
-# sample_mols = [Chem.MolFromSmiles(smiles) for smiles in sample_smiles]
-
-# grid = Draw.MolsToGridImage(sample_mols, molsPerRow=3, subImgSize=(400, 400))
-# grid
-
-
-# %%
 # Imported packages
 import torch
 import torch_geometric
@@ -43,16 +17,16 @@ print(f"Torch geometric version: {torch_geometric.__version__}")
 
 # Creating custom dataset
 class MoleculeDataset(Dataset):
-    def __init__(self, root, transform=None, pre_transform=None, pre_filter=None):
+    def __init__(self, root, filename, transform=None, pre_transform=None, pre_filter=None):
+        self.filename = filename
         super(MoleculeDataset, self).__init__(root, transform, pre_transform)
-
     @property
     def raw_file_names(self):
         """
         A list of files in the raw_dir which needs
         to be found in order to skip the download.
         """
-        return "HIV.csv"
+        return self.filename
 
     @property
     def processed_file_names(self):
@@ -60,7 +34,11 @@ class MoleculeDataset(Dataset):
         A list of files in the processed_dir which
         needs to be found in order to skip the processing.
         """
-        return "not_implemented.pt"
+        
+        self.data = pd.read_csv(self.raw_paths[0])
+        self.data.index = self.data["index"]
+        return [f"data_{i}.pt" for i in list(self.data.index)]
+
 
     def download(self):
         # skipping the exection of the download function
@@ -68,9 +46,12 @@ class MoleculeDataset(Dataset):
 
     def process(self):
         self.data = pd.read_csv(self.raw_paths[0])
-        print(self.data["smiles"][130:140])
+        
         for index, mol in tqdm(self.data.iterrows(), total=self.data.shape[0]):
             mol_obj = Chem.MolFromSmiles(mol["smiles"])
+            if mol_obj is None:
+                print(f"Invalid SMILES string at index {index}: {mol['smiles']}")
+                continue  # Skip this molecule if it is invalid
             # Get node features
             node_feats = self._get_node_features(mol=mol_obj)
             # Get edge features
@@ -164,12 +145,7 @@ class MoleculeDataset(Dataset):
     def get(self, idx):
         data = torch.load(osp.join(self.processed_dir, f"data_{idx}.pt"))
         return data
-
-
-# %% Test the dataset
-data = MoleculeDataset(root="data/")
-
-# %%
-print(data[0].x)
-print(data[0].edge_index.t())
+    
+#%%
+train_dataset = MoleculeDataset(root="data/", filename="HIV_train_oversampled.csv")
 # %%

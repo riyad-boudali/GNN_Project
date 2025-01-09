@@ -1,0 +1,12 @@
+pandas
+numpy
+torch 
+torch_geometric
+tqdm
+rdkit
+deepchem
+seaborn
+streamlit
+mlflow
+scikit-learn
+seaborn

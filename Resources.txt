@@ -1,6 +1,0 @@
-
-Resoureses:
-Pyg Docs :https://pytorch-geometric.readthedocs.io/en/latest/
-Dataiku GNN classification: https://blog.dataiku.com/graph-neural-networks-part-three
-rdkit Docs: https://www.rdkit.org/docs/api-docs.html
-moleculeNet: https://moleculenet.org/datasets-1
