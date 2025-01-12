@@ -67,10 +67,10 @@ def get_model_predictions(payload):
     
     if option == "REGISTRY":
         # Currently not supported for multi-input models
-        model_name = "GraphTransformer"
-        model_version = "2"
+        model_name = "Graph Transformer Network"
+        model_version = "1"
         model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/{model_version}")
-
+        print(model)
 
         prediction = model.predict({
             "x": payload["x"].numpy(),

@@ -1,0 +1,30 @@
+artifact_path: model
+flavors:
+  python_function:
+    config:
+      device: null
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.12.8
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.5.1+cu118
+mlflow_version: 2.19.0
+model_size_bytes: 1512783
+model_uuid: e31e188185e44ef99578fb030b1eb2b4
+run_id: 9d3fd722c6f545529cfb5627f7fd4316
+signature:
+  inputs: '[{"name": "x", "type": "tensor", "tensor-spec": {"dtype": "float32", "shape":
+    [-1, 30]}}, {"name": "edge_attr", "type": "tensor", "tensor-spec": {"dtype": "float32",
+    "shape": [-1, 11]}}, {"name": "edge_index", "type": "tensor", "tensor-spec": {"dtype":
+    "int32", "shape": [2, -1]}}, {"name": "batch_index", "type": "tensor", "tensor-spec":
+    {"dtype": "int32", "shape": [-1, 1]}}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float32", "shape": [-1,
+    1]}}]'
+  params: null
+utc_time_created: '2025-01-11 22:07:31.302525'

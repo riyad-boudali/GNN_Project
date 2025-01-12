@@ -10,3 +10,4 @@ streamlit
 mlflow
 scikit-learn
 seaborn
+mango
